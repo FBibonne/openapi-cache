@@ -68,6 +68,9 @@
         <module>
             openapi-cache-metadata-interfaceapi
         </module>
+        <module>
+            aop-method-injection
+        </module>
     </modules>
 
 </project>
