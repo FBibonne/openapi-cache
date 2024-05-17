@@ -49,8 +49,7 @@ paths:
         - geoDepartement
       summary: 'Informations sur un departement identifié par son code (deux ou trois caractères)'
       operationId: 'getcogdep'
-      x-http-cache:
-        duration: 30
+      x-operation-extra-annotation: '@bibonne.exp.oascache.metadata.annotations.HttpCache(duration=30)'
       parameters:
         - $ref: '#/components/parameters/dateActive'
         - $ref: '#/components/parameters/codeDepInPath'
@@ -301,7 +300,12 @@ components:
         - $ref: '#/components/schemas/Commune'
         - $ref: '#/components/schemas/Departement'
       discriminator:
-        propertyName: type
+        propertyName: territoireType
+      required:
+        - territoireType
+      properties:
+        territoireType:
+          $ref: '#/components/schemas/TypeEnum'
     CodeCom:
       pattern: '[0-9][0-9AB][0-9]{3}'
       type: 'string'
@@ -338,7 +342,6 @@ components:
       type: object
       required:
         - code
-        - type
         - uri
         - dateCreation
         - intituleSansArticle
@@ -349,7 +352,7 @@ components:
         code:
           type: string
           description: 'Code identifiant un teritoire quelqconque'
-        type:
+        territoireType:
           $ref: '#/components/schemas/TypeEnum'
         #######################################################
         uri:
@@ -441,7 +444,7 @@ components:
             code:
               type: string
               description: 'Code identifiant un teritoire quelconque'
-            type:
+            territoireType:
               $ref: '#/components/schemas/TypeEnum'
           #######################################################
           xml:
@@ -450,12 +453,15 @@ components:
       xml:
         name: TerritoireRef
       type: object
+      required:
+        - code
+        - territoireType
       description: 'Références vers un territoire de n''importe quel type'
       properties:
         code:
           type: string
           description: 'Code identifiant un teritoire quelqconque'
-        type:
+        territoireType:
           $ref: '#/components/schemas/TypeEnum'
     Commune:
       xml:

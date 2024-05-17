@@ -14,15 +14,15 @@
 
 
     <dependencies>
-      <!--  <dependency>
-            <groupId>bibonne.exp.oas-cache</groupId>
-            <artifactId>metadata-oas</artifactId>
-            <version>${parent.version}</version>
-        </dependency>-->
+        <dependency>
+            <groupId>jakarta.platform</groupId>
+            <artifactId>jakarta.jakartaee-web-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>bibonne.exp.oas-cache</groupId>
             <artifactId>metadata-modelapi</artifactId>
-            <version>${parent.version}</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
@@ -66,7 +66,6 @@
                             <generateApis>true</generateApis>
                             <generateModels>false</generateModels>
                             <generateSupportingFiles>false</generateSupportingFiles>
-                            <templateResourcePath>${project.basedir}/src/main/resources/templates/JavaSpring</templateResourcePath>
                             <configOptions>
                                 <interfaceOnly>true</interfaceOnly>
                                 <annotationLibrary>none</annotationLibrary>
