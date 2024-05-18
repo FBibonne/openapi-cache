@@ -2,7 +2,7 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 target/
-dependency-reduced-pom.xml
+**/dependency-reduced-pom.xml
 
 ### STS ###
 .apt_generated
