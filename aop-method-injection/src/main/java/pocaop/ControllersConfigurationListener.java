@@ -19,6 +19,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.annotation.Annotation;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -48,8 +49,6 @@ public class ControllersConfigurationListener implements ApplicationListener<App
 
 
     private void lookupEnpointsImplementation(AnnotationMetadata classMetadata, GenericApplicationContext genericApplicationContext) {
-        log.debug("Declaration of interface controller {} as a bean", classMetadata.getClassName());
-
         Class<?> controllerInterface;
         try {
             // LIKE org.springframework.data.util.AnnotatedTypeScanner.findTypes  !!
@@ -62,12 +61,27 @@ public class ControllersConfigurationListener implements ApplicationListener<App
         log.atInfo().log(()->STR."Add controller interface : \{classMetadata.getClassName()}");
 
         List<String> namesOfMethodsToIntercept=getNamesOfMethodsToIntercept(classMetadata);
-
+        log.atDebug().log(()->STR."Mappings for \{classMetadata.getClassName()} :\n\{mappingsFor(classMetadata)}");
         log.atTrace().log(()-> STR."Declare advisor to intercept methods \{namesOfMethodsToIntercept}");
         var advisorName = STR."\{classMetadata.getClassName()}_endpointsReplacer";
         genericApplicationContext.registerBeanDefinition(advisorName, getPointcutBeanDefinition(namesOfMethodsToIntercept));
         log.trace("Advisor {} registred",advisorName);
         genericApplicationContext.registerBean(classMetadata.getClassName(), ControllerProxyFactoryBean.class, controllerInterface, advisorName);
+    }
+
+    private String mappingsFor(AnnotationMetadata classMetadata) {
+        return streamEndpointsMethodsFrom(classMetadata)
+                .map(method->{
+                    var requestMappingAnnotation=method.getAnnotations().get(RequestMapping.class);
+                    if(!requestMappingAnnotation.isPresent()){
+                        return STR."??? \{method.getMethodName()}";
+                    }
+                    RequestMethod[] httpMethod = requestMappingAnnotation.getEnumArray("method", RequestMethod.class);
+                    String[] endpoint=requestMappingAnnotation.getStringArray("path");
+                    return STR."\{Arrays.toString(httpMethod)} \{Arrays.toString(endpoint)} -> \{method.getMethodName()}";
+                })
+                .reduce((s1, s2)->STR."\{s1}\n\{s2}")
+                .orElse("???");
     }
 
     private BeanDefinition getPointcutBeanDefinition(List<String> namesOfMethodsToIntercept) {
@@ -82,10 +96,14 @@ public class ControllersConfigurationListener implements ApplicationListener<App
     }
 
     private static List<String> getNamesOfMethodsToIntercept(AnnotationMetadata classMetadata) {
-        return classMetadata.getDeclaredMethods().stream()
-                .filter(ControllersConfigurationListener::isEndpointMethod)
+        return streamEndpointsMethodsFrom(classMetadata)
                 .map(MethodMetadata::getMethodName)
                 .toList();
+    }
+
+    private static Stream<MethodMetadata> streamEndpointsMethodsFrom(AnnotationMetadata classMetadata) {
+        return classMetadata.getDeclaredMethods().stream()
+                .filter(ControllersConfigurationListener::isEndpointMethod);
     }
 
     private static boolean isEndpointMethod(MethodMetadata method) {

@@ -93,7 +93,11 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <compilerArguments>--enable-preview</compilerArguments>
-                    <jvmArguments>--enable-preview</jvmArguments>
+                    <jvmArguments>
+                        --enable-preview
+                        -Dpocaop.interface-controllers.package=bibonne.exp.oascache.metadata.api
+                        -Dlogging.level.pocaop=debug
+                    </jvmArguments>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
