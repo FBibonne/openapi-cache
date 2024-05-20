@@ -52,6 +52,12 @@ public record JacksonUnmarshaller(CsvMapper csvMapper) implements Unmarshaller {
     @Override
     public Object unmarshal(@NonNull String csv, @NonNull Method calledMethod) {
         ReturnedType returnedType = new ReturnedType(calledMethod);
+        log.atDebug().log(() -> STR."""
+            Deserialize for \{returnedType.resolvableType()} .
+            CSV header is \{
+                csv.lines().limit(1).findFirst().orElse(null)}
+            """
+        );
         CsvSchema schema = CsvSchema.emptySchema().withHeader();
         ObjectReader reader = csvMapper.readerFor(returnedType.typeForMapping()).with(schema);
         List<?> results;

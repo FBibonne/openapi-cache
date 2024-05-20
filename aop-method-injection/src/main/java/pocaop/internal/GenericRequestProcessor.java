@@ -26,6 +26,8 @@ public record GenericRequestProcessor(QueryTemplateSupplier queryTemplateSupplie
             throw new UnsupportedOperationException(STR."Method \{methodName} not supported");
         }
         String query = queryTemplate.get().format(arguments);
-        return ofNullable(unmarshaller.unmarshal(queryExecutor.execute(query), method));
+        var queryResult = queryExecutor.execute(query);
+        log.atTrace().log(()->STR."Result returned by the query : \{queryResult}");
+        return ofNullable(unmarshaller.unmarshal(queryResult, method));
     }
 }

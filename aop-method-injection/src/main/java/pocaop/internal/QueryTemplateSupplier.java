@@ -6,7 +6,6 @@ import pocaop.internal.providers.DateProvider;
 import pocaop.internal.queries.FindAllQuery;
 import pocaop.internal.queries.FindByCodeQuery;
 import pocaop.internal.queries.FindDescQuery;
-import pocaop.internal.queries.QueryWrapper;
 
 import java.util.Optional;
 
@@ -71,24 +70,32 @@ public class QueryTemplateSupplier {
                                                    CodeProvider codeProvider,
                                                    DateProvider dateProvider) {
         public QueryTemplate forTerritory(String territoire) {
-            return new QueryTemplate(provide(this.queryWrapperProvider, territoire), _ -> territoire, this.codeProvider, this.dateProvider);
-        }
-
-        private QueryWrapper provide(@NonNull QueryWrapperProvider queryWrapperProvider, String territoire) {
             return switch (queryWrapperProvider){
-                case QueryTemplateBuilder.AllQueryProvider _ -> FindAllQuery.INSTANCE;
-                case QueryTemplateBuilder.FindByCodeProvider _ -> FindByCodeQuery.INSTANCE;
-                case QueryTemplateBuilder.FindDescProvider _ -> {
-                    if (territoire==null){
-                        throw new UnsupportedOperationException("Impossible to provide FindDescQuery when territoire is null (ie it is impossible to find all desc territories of a unknown type of territory");
-                    }
-                    yield new FindDescQuery(territoire);
-                }
-            };
+                case QueryTemplateBuilder.AllQueryProvider _
+                        -> QueryTemplate.ofFindAll(FindAllQuery.INSTANCE, _ -> territoire, dateProvider);
+                case QueryTemplateBuilder.FindByCodeProvider _
+                        -> QueryTemplate.ofFindByCode(FindByCodeQuery.INSTANCE, _ -> territoire, codeProvider, dateProvider);
+                case QueryTemplateBuilder.FindDescProvider _
+                        -> QueryTemplate.ofFindDesc(queryWrapperForFindByDesc(territoire), codeProvider, dateProvider);
+                };
         }
 
         public QueryTemplate forUnknownTerritoryType(int position) {
-            return new QueryTemplate(provide(this.queryWrapperProvider, null), args -> QueryTemplate.resolveAsString(args, position), this.codeProvider, this.dateProvider);
+            return switch (queryWrapperProvider){
+                case QueryTemplateBuilder.AllQueryProvider _
+                        -> QueryTemplate.ofFindAll(FindAllQuery.INSTANCE, args -> QueryTemplate.resolveAsString(args, position), dateProvider);
+                case QueryTemplateBuilder.FindByCodeProvider _
+                        -> QueryTemplate.ofFindByCode(FindByCodeQuery.INSTANCE, args -> QueryTemplate.resolveAsString(args, position), codeProvider, dateProvider);
+                case QueryTemplateBuilder.FindDescProvider _
+                        -> QueryTemplate.ofFindDesc(queryWrapperForFindByDesc(null), codeProvider, dateProvider);
+            };
+        }
+
+        private static FindDescQuery queryWrapperForFindByDesc(String territoire) {
+            if (territoire ==null){
+                throw new UnsupportedOperationException("Impossible to provide FindDescQuery when territoire is null (ie it is impossible to find all desc territories of a unknown type of territory");
+            }
+            return new FindDescQuery(territoire);
         }
 
         public QueryTemplateBuilderWithRequest codeAtPosition(int i) {

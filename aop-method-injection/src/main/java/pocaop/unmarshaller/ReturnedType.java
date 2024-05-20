@@ -2,11 +2,18 @@ package pocaop.unmarshaller;
 
 import lombok.NonNull;
 import org.springframework.core.ResolvableType;
+import org.springframework.http.ResponseEntity;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
 
 public record ReturnedType(@NonNull ResolvableType resolvableType) {
+
+    public ReturnedType{
+        if (resolvableType.resolve()!=null && ResponseEntity.class.isAssignableFrom(resolvableType.resolve())){
+            resolvableType=resolvableType.getGeneric();
+        }
+    }
 
     public ReturnedType(@NonNull Method calledMethod){
         this(ResolvableType.forMethodReturnType(calledMethod));
@@ -17,6 +24,6 @@ public record ReturnedType(@NonNull ResolvableType resolvableType) {
     }
 
     public boolean isCollection() {
-        return Collection.class.isAssignableFrom(resolvableType.resolve());
+        return resolvableType.resolve()!=null && Collection.class.isAssignableFrom(resolvableType.resolve());
     }
 }

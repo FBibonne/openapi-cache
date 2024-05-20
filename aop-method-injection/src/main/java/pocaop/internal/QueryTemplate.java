@@ -10,22 +10,25 @@ import pocaop.internal.providers.TerritoireProvider;
 import pocaop.internal.queries.FindAllQuery;
 import pocaop.internal.queries.FindByCodeQuery;
 import pocaop.internal.queries.FindDescQuery;
-import pocaop.internal.queries.QueryWrapper;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
-public record QueryTemplate(@NonNull QueryWrapper queryWrapperClass,
-                            @NonNull TerritoireProvider territoireProvider,
-                            @NonNull CodeProvider codeProvider,
-                            @NonNull DateProvider dateProvider) {
+public interface QueryTemplate{
 
-    String format(Object[] arguments) throws ArgumentException {
-       return switch (queryWrapperClass){
-           case FindByCodeQuery findByCodeQuery -> findByCodeQuery.interpolate(territoireProvider.provide(arguments), codeProvider.provide(arguments), dateProvider.provide(arguments));
-           case FindAllQuery findAllQuery -> findAllQuery.interpolate(territoireProvider().provide(arguments), dateProvider.provide(arguments));
-           case FindDescQuery findDescQuery -> findDescQuery.interpolate(codeProvider.provide(arguments), dateProvider.provide(arguments));
-       };
+     String format(Object[] arguments) throws ArgumentException;
+
+    static QueryTemplate ofFindByCode(@NonNull FindByCodeQuery findByCodeQuery, @NonNull TerritoireProvider territoireProvider,
+                                      @NonNull CodeProvider codeProvider, @NonNull DateProvider dateProvider){
+        return arguments -> findByCodeQuery.interpolate(territoireProvider.provide(arguments), codeProvider.provide(arguments), dateProvider.provide(arguments));
+    }
+
+    static QueryTemplate ofFindAll(@NonNull FindAllQuery findAllQuery, @NonNull TerritoireProvider territoireProvider, @NonNull DateProvider dateProvider){
+        return arguments -> findAllQuery.interpolate(territoireProvider.provide(arguments), dateProvider.provide(arguments));
+    }
+
+    static QueryTemplate ofFindDesc(@NonNull FindDescQuery findDescQuery,@NonNull CodeProvider codeProvider, @NonNull DateProvider dateProvider){
+        return arguments -> findDescQuery.interpolate(codeProvider.provide(arguments), dateProvider.provide(arguments));
     }
 
     static String resolveAsString(@NonNull Object[] arguments, int i) throws ArgumentException {
@@ -52,5 +55,7 @@ public record QueryTemplate(@NonNull QueryWrapper queryWrapperClass,
         }
         return optionalArgument.map(LocalDate.class::cast);
     }
+
+
 
 }
