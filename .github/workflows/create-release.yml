@@ -16,7 +16,7 @@ jobs:
             java-version: '21'
             distribution: 'temurin'
         - name: Build
-          run: >
+          run: >-
             mvn -B install --file metadata-oas/pom.xml
             mvn -B install --file metadata-modelapi/pom.xml
             mvn -B install --file metadata-interfaceapi/pom.xml
