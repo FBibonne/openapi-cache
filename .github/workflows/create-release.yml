@@ -16,7 +16,7 @@ jobs:
             java-version: '21'
             distribution: 'temurin'
         - name: Build
-          run: ./build-with-maven.sh
+          run: mvn install
         - name: Release
           uses: softprops/action-gh-release@v2
           with:
