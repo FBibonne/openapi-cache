@@ -1,7 +1,9 @@
 package bibonne.exp.oascache.metadata.internal;
 
+import bibonne.exp.oascache.metadata.api.model.Departement;
 import bibonne.exp.oascache.metadata.internal.queries.FindAllQuery;
 import bibonne.exp.oascache.metadata.internal.queries.FindByCodeQuery;
+import bibonne.exp.oascache.metadata.internal.queries.FindDescQuery;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +19,10 @@ public record WebResponseBuilder(QueryExecutor queryExecutor, Unmarshaller unmar
 
     public <G> WebResponse<G> forFindAllQuery(Class<G> targetClass, Optional<LocalDate> date) {
         return new WebResponse<>(this.queryExecutor.execute(FindAllQuery.INSTANCE.interpolate(targetClass.getSimpleName(), date)), targetClass, unmarshaller);
+    }
+
+    public <T, G> WebResponse<G> forFindDescQuery(Class<T> sourceTerritory, String code, Optional<LocalDate> date, Class<G> targetClass) {
+        return new WebResponse<>(this.queryExecutor.execute(new FindDescQuery(sourceTerritory.getSimpleName()).interpolate(code, date)), targetClass, unmarshaller);
     }
 
     public record WebResponse<G>(String queryResult, Class<G> targetClass, Unmarshaller unmarshaller) {

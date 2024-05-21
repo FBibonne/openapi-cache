@@ -5,12 +5,14 @@ import bibonne.exp.oascache.metadata.api.model.Commune;
 import bibonne.exp.oascache.metadata.internal.WebResponseBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
+@Controller
 public class CommuneEndpoint implements GeoCommuneApi {
     private final WebResponseBuilder webResponseBuilder;
 
