@@ -60,16 +60,16 @@
 
     <modules>
         <module>
-            openapi-cache-metadata-openapi
+            metadata-oas
         </module>
         <module>
-            openapi-cache-metadata-modelapi
+            metadata-modelapi
         </module>
         <module>
-            openapi-cache-metadata-interfaceapi
+            metadata-interfaceapi
         </module>
         <module>
-            aop-method-injection
+            metadata-webimpl
         </module>
     </modules>
 
