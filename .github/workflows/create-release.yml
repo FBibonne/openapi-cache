@@ -16,11 +16,7 @@ jobs:
             java-version: '21'
             distribution: 'temurin'
         - name: Build
-          run: |
-            mvn -B install --file metadata-oas/pom.xml
-            mvn -B install --file metadata-modelapi/pom.xml
-            mvn -B install --file metadata-interfaceapi/pom.xml
-            mvn -B -Pnative package --file metadata-webimpl/pom.xml
+          run: ./build-with-maven.sh
         - name: Release
           uses: softprops/action-gh-release@v2
           with:
