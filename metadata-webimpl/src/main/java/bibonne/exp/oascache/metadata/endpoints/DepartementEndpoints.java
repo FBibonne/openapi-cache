@@ -1,7 +1,6 @@
 package bibonne.exp.oascache.metadata.endpoints;
 
 import bibonne.exp.oascache.metadata.api.GeoDepartementApi;
-import bibonne.exp.oascache.metadata.api.model.Commune;
 import bibonne.exp.oascache.metadata.api.model.Departement;
 import bibonne.exp.oascache.metadata.api.model.TerritoireRef;
 import bibonne.exp.oascache.metadata.api.model.TypeEnum;
@@ -16,7 +15,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Controller
-public class DepartementEndpoint implements GeoDepartementApi {
+public class DepartementEndpoints implements GeoDepartementApi {
     private final WebResponseBuilder webResponseBuilder;
 
     @Override
