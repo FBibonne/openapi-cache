@@ -47,6 +47,16 @@ public record JacksonUnmarshaller(CsvMapper csvMapper) implements Unmarshaller {
                 }
             }
         });
+        module.addDeserializer(Departement.TypeArticleEnum.class, new JsonDeserializer<>() {
+            @Override
+            public Departement.TypeArticleEnum deserialize(JsonParser parser, DeserializationContext ctxt) {
+                try {
+                    return Departement.TypeArticleEnum.values()[Integer.parseInt(parser.getValueAsString())];
+                } catch (NumberFormatException | IOException e) {
+                    return Departement.TypeArticleEnum._0_CHARNIERE_DE_;
+                }
+            }
+        });
         return module;
     }
 
