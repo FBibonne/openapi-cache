@@ -6,6 +6,7 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClient;
 
 import java.lang.reflect.Method;
 import java.util.Objects;
@@ -53,9 +54,11 @@ public class CacheHeaderAdvice implements MethodInterceptor {
     }
 
     private static void putInCache(Method method, Object[] arguments, Object response) {
+        //TODO Implement it : find the duration, get the cache with right TTL, compute key then put response with the key
     }
 
     private Optional<?> retrieveFromCache(Method method, Object[] arguments) {
+        //TODO Implement it : find the duration, get the cache with right TTL, compute key then get the response
         return Optional.empty();
     }
 }
