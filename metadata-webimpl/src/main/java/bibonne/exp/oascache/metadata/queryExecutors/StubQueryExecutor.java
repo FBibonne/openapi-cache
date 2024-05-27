@@ -1,4 +1,4 @@
-package bibonne.exp.oascache.metadata.stubs;
+package bibonne.exp.oascache.metadata.queryExecutors;
 
 import lombok.NonNull;
 import org.springframework.stereotype.Component;
