@@ -1,12 +1,25 @@
 package poclient;
 
-import org.springframework.cache.annotation.CacheConfig;
-import org.springframework.cache.annotation.Cacheable;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
+import java.time.LocalDate;
+
+@SpringBootApplication
+@EnableFeignClients
 public class TestFeign {
-
-    - Use Generated openfeign interface
-    - Configure openfeign to use okhttp client with cache activated
+/*
     - Test
+*/
+
+    public static void main(String[] args) {
+        var context=(new SpringApplication(TestFeign.class)).run(args);
+        GeoCommuneClient  client = context.getBean(GeoCommuneClient.class);
+        client.getcogcom("33529", (LocalDate) null);
+    }
+
+
+
 
 }

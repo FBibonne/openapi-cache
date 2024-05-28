@@ -6,21 +6,49 @@
     <parent>
         <groupId>bibonne.exp.oas-cache</groupId>
         <artifactId>parent-oas</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
 
     <artifactId>metadata-clientinterface</artifactId>
 
     <dependencies>
         <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-core</artifactId>
+            <version>${feign.version}</version>
+        </dependency>
+        <dependency>
             <groupId>bibonne.exp.oas-cache</groupId>
-            <artifactId>metadata-oas</artifactId>
+            <artifactId>metadata-modelapi</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
 
     <build>
+        <testSourceDirectory>${project.build.directory}/generated-sources/openapi/src/test/java</testSourceDirectory>
+
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>initialize</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}</outputDirectory>
+                            <includeArtifactIds>metadata-oas</includeArtifactIds>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
@@ -31,13 +59,20 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
+                            <inputSpec>${project.build.directory}/openapi.yaml</inputSpec>
                             <generatorName>java</generatorName>
                             <library>feign</library>
-                            <generateModels>true</generateModels>
-                            <generateApis>false</generateApis>
+                            <apiPackage>bibonne.exp.oascache.metadata.client</apiPackage>
+                            <modelPackage>bibonne.exp.oascache.metadata.api.model</modelPackage>
+                            <generateApis>true</generateApis>
+                            <generateApiTests>false</generateApiTests>
+                            <generateModels>false</generateModels>
+                            <generateSupportingFiles>false</generateSupportingFiles>
                             <configOptions>
+                                <useGzipFeature>true</useGzipFeature>
                                 <serializationLibrary>jackson</serializationLibrary>
+                                <useJakartaEe>true</useJakartaEe>
+                                <useBeanValidation>false</useBeanValidation>
                             </configOptions>
                         </configuration>
                     </execution>

@@ -1,0 +1,12 @@
+spring:
+  cloud:
+    openfeign:
+      client:
+        config:
+          metadata:
+            url: http://localhost:8080/
+      http2client:
+          enabled: true
+      okhttp:
+          enabled: true
+# spring.cloud.httpclientfactories.ok.enabled = true ?
