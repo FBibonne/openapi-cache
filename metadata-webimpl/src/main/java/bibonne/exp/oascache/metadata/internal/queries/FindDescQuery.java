@@ -11,9 +11,6 @@ public record FindDescQuery(@NonNull String typeOrigine) implements QueryWrapper
     public String interpolate(@NonNull String code, Optional<LocalDate> Optionaldate) {
         LocalDate date = Optionaldate.orElse(LocalDate.now());
         return STR."""
-                PREFIX igeo: <http://rdf.insee.fr/def/geo#>
-                PREFIX skos:<http://www.w3.org/2004/02/skos/core#>
-                PREFIX insee:<http://rdf.insee.fr/def/base#>
                 SELECT DISTINCT ?uri ?code ?type ?typeArticle ?intitule ?intituleSansArticle ?dateCreation ?dateSuppression ?chefLieu ?typeDIris
                 FROM <http://rdf.insee.fr/graphes/geo/cog>
                 		WHERE {

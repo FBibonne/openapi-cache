@@ -94,6 +94,7 @@ paths:
       description: |-
         Informations sur toutes les communes actives à la date donnée. Par défaut, c'est la date courante.
       operationId: 'getcogcomliste'
+      x-operation-extra-annotation: '@bibonne.exp.oascache.metadata.annotations.HttpCache(duration=30)'
       parameters:
         - $ref: '#/components/parameters/dateActive'
         - $ref: '#/components/parameters/filtreNom'

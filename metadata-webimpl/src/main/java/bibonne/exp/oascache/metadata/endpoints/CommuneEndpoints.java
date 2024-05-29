@@ -23,7 +23,6 @@ public class CommuneEndpoints implements GeoCommuneApi {
     }
 
     @Override
-    @HttpCache(duration=30)
     public ResponseEntity<List<Commune>> getcogcomliste(Optional<LocalDate> date, Optional<String> filtreNom, Optional<Boolean> com) {
         return this.webResponseBuilder.forFindAllQuery(Commune.class, date).asList();
     }

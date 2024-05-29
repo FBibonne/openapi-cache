@@ -6,31 +6,39 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClient;
 
+import javax.cache.Cache;
+import javax.cache.CacheManager;
 import java.lang.reflect.Method;
-import java.util.Objects;
 import java.util.Optional;
+
+import static bibonne.exp.oascache.metadata.cachedecorator.CacheAOPConfig.CACHE_NAME;
+import static bibonne.exp.oascache.metadata.utils.CacheAndDuration.findCacheAnnotation;
 
 @Component
 public class CacheHeaderAdvice implements MethodInterceptor {
+
+    private final Cache<CacheKeyPair, Object> cache;
+
+    public CacheHeaderAdvice(CacheManager cacheManager) {
+        this.cache = cacheManager.getCache(CACHE_NAME);
+    }
 
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
         Method method = invocation.getMethod();
         HttpCache httpCache = findCacheAnnotation(method);
         var responseFromCache = retrieveFromCache(method, invocation.getArguments());
-        Object response = responseFromCache.isPresent()?responseFromCache.get():invokeThenCache(invocation);
+        Object response = responseFromCache.isPresent() ? responseFromCache.get() : invokeThenCache(invocation);
         return responseWithCacheHeaders(response, httpCache);
     }
 
     private Object responseWithCacheHeaders(Object response, HttpCache httpCache) {
         if (response instanceof ResponseEntity<?> responseEntity) {
-            var newResponseEntity = ResponseEntity.status(responseEntity.getStatusCode());
-            newResponseEntity.headers(responseEntity.getHeaders());
-            newResponseEntity.cacheControl(cacheControl(httpCache));
-            newResponseEntity.body(responseEntity.getBody());
-            response=newResponseEntity.build();
+            response = ResponseEntity.status(responseEntity.getStatusCode())
+                    .headers(responseEntity.getHeaders())
+                    .cacheControl(cacheControl(httpCache))
+                    .body(responseEntity.getBody());
         }
         return response;
     }
@@ -38,27 +46,23 @@ public class CacheHeaderAdvice implements MethodInterceptor {
     private CacheControl cacheControl(HttpCache httpCache) {
         var duration = httpCache.duration();
         return duration <= 0 ?
-                CacheControl.noCache():
+                CacheControl.noCache() :
                 CacheControl.maxAge(duration, httpCache.unit()).mustRevalidate();
     }
 
-    private static HttpCache findCacheAnnotation(Method method) {
-        return Objects.requireNonNull(method.getAnnotation(HttpCache.class));
-    }
-
-    private static Object invokeThenCache(MethodInvocation invocation) throws Throwable {
+    private Object invokeThenCache(MethodInvocation invocation) throws Throwable {
         Object response;
         response = invocation.proceed();
         putInCache(invocation.getMethod(), invocation.getArguments(), response);
         return response;
     }
 
-    private static void putInCache(Method method, Object[] arguments, Object response) {
-        //TODO Implement it : find the duration, get the cache with right TTL, compute key then put response with the key
+    private void putInCache(Method method, Object[] arguments, Object response) {
+        cache.put(new CacheKeyPair(method, arguments), response);
     }
 
     private Optional<?> retrieveFromCache(Method method, Object[] arguments) {
-        //TODO Implement it : find the duration, get the cache with right TTL, compute key then get the response
-        return Optional.empty();
+        return Optional.ofNullable(cache.get(new CacheKeyPair(method, arguments)));
     }
+
 }

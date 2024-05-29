@@ -7,10 +7,7 @@ public sealed abstract class SimpleQuery implements QueryWrapper permits FindAll
 
     protected String interpolate(Optional<String> code, Optional<LocalDate> date, String territoire){
         return STR."""
-                PREFIX igeo: <http://rdf.insee.fr/def/geo#>
-                PREFIX skos:<http://www.w3.org/2004/02/skos/core#>
-                PREFIX insee:<http://rdf.insee.fr/def/base#>
-                SELECT DISTINCT ?uri ?code ?typeArticle ?intitule ?intituleSansArticle ?dateCreation ?dateSuppression ?chefLieu ?intitule ?categorieJuridique ?intituleComplet
+                SELECT DISTINCT ?territoireType ?uri ?code ?typeArticle ?intitule ?intituleSansArticle ?dateCreation ?dateSuppression ?chefLieu ?intitule ?categorieJuridique ?intituleComplet
                 FROM <http://rdf.insee.fr/graphes/geo/cog>
                 FROM <http://rdf.insee.fr/graphes/codes/cj>
                 WHERE {
@@ -18,6 +15,7 @@ public sealed abstract class SimpleQuery implements QueryWrapper permits FindAll
                 				 igeo:codeArticle ?typeArticle ;
                 				 igeo:nom ?intitule ;
                 				 igeo:nomSansArticle ?intituleSansArticle .
+                				 BIND('\{territoire}' as ?territoireType)
                 				 OPTIONAL {
                 					?uri a igeo:\{territoire} ;
                 					insee:categorieJuridique ?cj.
