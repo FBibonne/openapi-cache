@@ -36,7 +36,7 @@ public record RealQueryExecutor(RestClient restClient, Function<String, URI> que
     }
 
     public static final String PREFIXES =
-            STR."""
+            """
                     PREFIX igeo: <http://rdf.insee.fr/def/geo#>
                     PREFIX dcterms: <http://purl.org/dc/terms/>
                     PREFIX xkos: <http://rdf-vocabulary.ddialliance.org/xkos#>
