@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>bibonne.exp.oas-cache</groupId>
+        <groupId>fr.insee.oas-cache</groupId>
         <artifactId>parent-oas</artifactId>
         <version>1.0.0</version>
     </parent>
@@ -16,7 +16,7 @@
             <artifactId>spring-context</artifactId>
         </dependency>
         <dependency>
-            <groupId>bibonne.exp.oas-cache</groupId>
+            <groupId>fr.insee.oas-cache</groupId>
             <artifactId>metadata-oas</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
@@ -61,7 +61,7 @@
                         <configuration>
                             <inputSpec>${project.build.directory}/openapi.yaml</inputSpec>
                             <generatorName>spring</generatorName>
-                            <modelPackage>bibonne.exp.oascache.metadata.api.model</modelPackage>
+                            <modelPackage>fr.insee.oascache.metadata.api.model</modelPackage>
                             <generateApis>false</generateApis>
                             <generateModels>true</generateModels>
                             <generateSupportingFiles>false</generateSupportingFiles>

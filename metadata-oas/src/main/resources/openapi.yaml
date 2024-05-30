@@ -49,7 +49,7 @@ paths:
         - geoDepartement
       summary: 'Informations sur un departement identifié par son code (deux ou trois caractères)'
       operationId: 'getcogdep'
-      x-operation-extra-annotation: '@bibonne.exp.oascache.metadata.annotations.HttpCache(duration=30)'
+      x-operation-extra-annotation: '@fr.insee.oascache.metadata.annotations.HttpCache(duration=30)'
       parameters:
         - $ref: '#/components/parameters/dateActive'
         - $ref: '#/components/parameters/codeDepInPath'
@@ -94,7 +94,7 @@ paths:
       description: |-
         Informations sur toutes les communes actives à la date donnée. Par défaut, c'est la date courante.
       operationId: 'getcogcomliste'
-      x-operation-extra-annotation: '@bibonne.exp.oascache.metadata.annotations.HttpCache(duration=30)'
+      x-operation-extra-annotation: '@fr.insee.oascache.metadata.annotations.HttpCache(duration=30)'
       parameters:
         - $ref: '#/components/parameters/dateActive'
         - $ref: '#/components/parameters/filtreNom'

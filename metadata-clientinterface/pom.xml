@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>bibonne.exp.oas-cache</groupId>
+        <groupId>fr.insee.oas-cache</groupId>
         <artifactId>parent-oas</artifactId>
         <version>1.0.0</version>
     </parent>
@@ -23,15 +23,13 @@
             <version>${feign.version}</version>
         </dependency>
         <dependency>
-            <groupId>bibonne.exp.oas-cache</groupId>
+            <groupId>fr.insee.oas-cache</groupId>
             <artifactId>metadata-modelapi</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
 
     <build>
-        <testSourceDirectory>${project.build.directory}/generated-sources/openapi/src/test/java</testSourceDirectory>
-
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -62,8 +60,8 @@
                             <inputSpec>${project.build.directory}/openapi.yaml</inputSpec>
                             <generatorName>java</generatorName>
                             <library>feign</library>
-                            <apiPackage>bibonne.exp.oascache.metadata.client</apiPackage>
-                            <modelPackage>bibonne.exp.oascache.metadata.api.model</modelPackage>
+                            <apiPackage>fr.insee.oascache.metadata.client</apiPackage>
+                            <modelPackage>fr.insee.oascache.metadata.api.model</modelPackage>
                             <generateApis>true</generateApis>
                             <generateApiTests>false</generateApiTests>
                             <generateModels>false</generateModels>

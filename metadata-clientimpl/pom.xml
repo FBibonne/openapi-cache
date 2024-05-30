@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.6</version>
+        <version>3.2.5</version>
         <relativePath/>
     </parent>
 
@@ -45,12 +45,12 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
         <dependency>
-            <groupId>bibonne.exp.oas-cache</groupId>
+            <groupId>fr.insee.oas-cache</groupId>
             <artifactId>metadata-oas</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>bibonne.exp.oas-cache</groupId>
+            <groupId>fr.insee.oas-cache</groupId>
             <artifactId>metadata-clientinterface</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -98,22 +98,13 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.graalvm.buildtools</groupId>
-                <artifactId>native-maven-plugin</artifactId>
-                <configuration>
-                    <jvmArgs>
-                        --enable-preview
-                    </jvmArgs>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <compilerArguments>--enable-preview</compilerArguments>
                     <jvmArguments>
                         --enable-preview
-                        -Dlogging.level.pocaop=debug
+                        -Dfr.insee.oascache.metadata=debug
                     </jvmArguments>
                     <excludes>
                         <exclude>

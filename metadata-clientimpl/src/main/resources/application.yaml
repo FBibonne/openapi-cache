@@ -9,4 +9,3 @@ spring:
           enabled: true
       okhttp:
           enabled: true
-# spring.cloud.httpclientfactories.ok.enabled = true ?

@@ -5,11 +5,11 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.6</version>
+        <version>3.2.5</version>
         <relativePath/>
     </parent>
 
-    <groupId>bibonne.exp.oas-cache</groupId>
+    <groupId>fr.insee.oas-cache</groupId>
     <artifactId>metadata-webimpl</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
@@ -20,12 +20,12 @@
 
     <dependencies>
         <dependency>
-            <groupId>bibonne.exp.oas-cache</groupId>
+            <groupId>fr.insee.oas-cache</groupId>
             <artifactId>metadata-oas</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>bibonne.exp.oas-cache</groupId>
+            <groupId>fr.insee.oas-cache</groupId>
             <artifactId>metadata-interfaceapi</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -104,7 +104,7 @@
                     <compilerArguments>--enable-preview</compilerArguments>
                     <jvmArguments>
                         --enable-preview
-                        -Dlogging.level.pocaop=debug
+                        -Dfr.insee.oascache.metadata=debug
                     </jvmArguments>
                     <excludes>
                         <exclude>

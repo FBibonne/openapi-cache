@@ -10,7 +10,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>bibonne.exp.oas-cache</groupId>
+    <groupId>fr.insee.oas-cache</groupId>
     <artifactId>parent-oas</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>

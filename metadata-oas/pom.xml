@@ -4,39 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>bibonne.exp.oas-cache</groupId>
+        <groupId>fr.insee.oas-cache</groupId>
         <artifactId>parent-oas</artifactId>
         <version>1.0.0</version>
     </parent>
 
     <artifactId>metadata-oas</artifactId>
-
-<!--  Generate client
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.openapitools</groupId>
-                <artifactId>openapi-generator-maven-plugin</artifactId>
-                <version>${openapitools-generator.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <inputSpec>${project.basedir}/src/main/resources/openapi.yaml</inputSpec>
-                            <generatorName>java</generatorName>
-                            <library>feign</library>
-                            <generateModels>true</generateModels>
-                            <generateApis>false</generateApis>
-                            <configOptions>
-                                <serializationLibrary>jackson</serializationLibrary>
-                            </configOptions>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>-->
 
 </project>
