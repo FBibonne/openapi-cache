@@ -43,7 +43,8 @@ class GeoCommuneClientTest {
     private void enqueueServerResponse() {
         var response = new MockResponse();
         response.setHeader("content-type", "application/json");
-        response.setBody("{\"code\":\"33529\", \"intitule\":\"La Teste\"}");
+        response.setBody("""
+                {"code":"33529", "intitule":"La Teste", "territoireType": "Commune"}""");
         response.setResponseCode(200);
         server.enqueue(response);
     }
