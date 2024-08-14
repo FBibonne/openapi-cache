@@ -19,8 +19,12 @@ jobs:
             java-version: '21'
             distribution: 'temurin'
         - name: Build
-          run: mvn -B install && mvn -B clean --file metadata-webimpl/pom.xml && mvn -B -Pnative package --file metadata-webimpl/pom.xml
+          run: |
+            mvn -B install && mvn -B clean --file metadata-webimpl/pom.xml && mvn -B -Pnative package --file metadata-webimpl/pom.xml
+            mvn -B org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom --file metadata-webimpl/pom.xml
         - name: Release
           uses: softprops/action-gh-release@v2
           with:
-            files: metadata-webimpl/target/metadata.jar
+            files: |
+              metadata-webimpl/target/metadata.jar
+              metadata-webimpl/target/bom.json
